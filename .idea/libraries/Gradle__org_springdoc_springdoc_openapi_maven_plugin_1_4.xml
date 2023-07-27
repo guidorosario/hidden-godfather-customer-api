@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springdoc:springdoc-openapi-maven-plugin:1.4" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.springdoc" artifactId="springdoc-openapi-maven-plugin" version="1.4" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springdoc/springdoc-openapi-maven-plugin/1.4/4a7fa835e1179e4d2c12458b7a3b2c313e8fc028/springdoc-openapi-maven-plugin-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springdoc/springdoc-openapi-maven-plugin/1.4/50148f4da86fd944059eb7439de8ccfa2dcd606f/springdoc-openapi-maven-plugin-1.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

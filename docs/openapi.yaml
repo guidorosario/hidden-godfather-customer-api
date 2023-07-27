@@ -1,0 +1,224 @@
+openapi: 3.0.1
+info:
+  title: Risk Device
+  description: API de Cadastro
+  version: 1.0.0
+tags:
+  - name: Health
+    description: Endpoint para verificar se a aplicação está UP
+  - name: Customer
+    description: Endpoints para manipulação de dados do cliente
+
+paths:
+  /v1/actuator:
+    get:
+      tags:
+        - "Health"
+      description: |
+        Retorna se a aplicação está UP
+      summary: Health
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /v1/customer:
+    post:
+      tags:
+        - "Customer"
+      description: "Criação do cliente"
+      summary: Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        "201":
+          description: "Sucesso na requisição"
+    get:
+      tags:
+        - "Customer"
+      description: "Criação do cliente"
+      summary: Customer
+      responses:
+        "200":
+          description: Lista dos Clientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCustomerResponse'
+  /v1/customer/{documentNumber}:
+    get:
+      tags:
+        - "Customer"
+      description: "Criação do cliente"
+      summary: Customer
+      parameters:
+        - in: path
+          name: "documentNumber"
+          description: Número documento do cliente
+          required: true
+          example: "8563254782"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista dos Clientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+    delete:
+      tags:
+        - "Customer"
+      description: "Criação do cliente"
+      summary: Customer
+      parameters:
+        - in: path
+          name: "documentNumber"
+          description: Número documento do cliente
+          required: true
+          example: "8563254782"
+          schema:
+            type: string
+      responses:
+        "202":
+          description: "Sucesso na requisição"
+    put:
+      tags:
+        - "Customer"
+      description: "Criação do cliente"
+      summary: Customer
+      parameters:
+        - in: path
+          name: "documentNumber"
+          description: Número documento do cliente
+          required: true
+          example: "8563254782"
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        "201":
+          description: "Sucesso na requisição"
+
+  /v1/customer/active/{documentNumber}:
+    patch:
+      tags:
+        - "Customer"
+      description: "Ativação do cliente"
+      summary: Customer
+      parameters:
+        - in: path
+          name: "documentNumber"
+          description: Número documento do cliente
+          required: true
+          example: "8563254782"
+          schema:
+            type: string
+      responses:
+        "202":
+          description: "Sucesso na requisição"
+  /v1/customer/inactive/{documentNumber}:
+    patch:
+      tags:
+        - "Customer"
+      description: "Ativação do cliente"
+      summary: Customer
+      parameters:
+        - in: path
+          name: "documentNumber"
+          description: Número documento do cliente
+          required: true
+          example: "8563254782"
+          schema:
+            type: string
+      responses:
+        "202":
+          description: "Sucesso na requisição"
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          description: status da api
+          type: string
+          example: "UP!"
+
+    CustomerRequest:
+      type: object
+      properties:
+        name:
+          description: Nome do cliente
+          type: string
+          example: "José Alberto"
+        documentNumber:
+          description: numero de documento do cliente
+          type: string
+          example: 4548134515
+        email:
+          description: email do cliente
+          type: string
+          example: "teste@teste.com"
+        phone:
+          description: email do cliente
+          type: string
+          example: "11858654782"
+
+    ListCustomerResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerResponse'
+
+    CustomerResponse:
+      type: object
+      properties:
+        name:
+          description: Nome do cliente
+          type: string
+          example: "José Alberto"
+        documentNumber:
+          description: numero de documento do cliente
+          type: string
+          example: 4548134515
+        documentType:
+          description: Tipo de documento do cliente
+          type: string
+          example: "CPF"
+          items:
+            $ref: "#/components/schemas/DocumentType"
+        email:
+          description: email do cliente
+          type: string
+          example: "teste@teste.com"
+        phone:
+          description: email do cliente
+          type: string
+          example: "11858654782"
+        active:
+          description: situação do conta do cliente
+          type: boolean
+          example: true
+        createdAt:
+          description: Data de criação do cliente
+          type: string
+          format: date
+          example:  "2023-07-24T20:38:44.463"
+        updatedAt:
+          description: Data de criação do cliente
+          type: string
+          format: date
+          example: "2023-07-24T20:38:44.463"
+    DocumentType:
+      type: string
+      enum: [ CPF, CNPJ ]
