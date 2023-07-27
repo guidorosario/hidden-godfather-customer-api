@@ -1,6 +1,7 @@
 openapi: 3.0.1
 info:
-  title: Risk Device
+
+  title: Hidden Godfather Customer
   description: API de Cadastro
   version: 1.0.0
 tags:
@@ -222,3 +223,4 @@ components:
     DocumentType:
       type: string
       enum: [ CPF, CNPJ ]
+
