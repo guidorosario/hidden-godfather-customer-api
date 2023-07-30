@@ -3,6 +3,7 @@ package com.hidden.godfather.customer.controller;
 import com.hidden.godfather.customer.model.request.CustomerRequest;
 import com.hidden.godfather.customer.mongo.Customer;
 import com.hidden.godfather.customer.service.CustomerService;
+import com.hidden.godfather.customer.service.TeamsWebHookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,11 @@ import reactor.core.publisher.Mono;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final TeamsWebHookService teamsWebHookService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, TeamsWebHookService teamsWebHookService) {
         this.customerService = customerService;
+        this.teamsWebHookService = teamsWebHookService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,6 +40,8 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     Mono<Void> createCustomer(@RequestBody CustomerRequest customerRequest) {
+        teamsWebHookService.
+                createWebHook("Criação de Novo Usuário", "Usuário " + customerRequest.name() + "criado", "Criado");
         return customerService.createCustomer(customerRequest).then();
     }
 
