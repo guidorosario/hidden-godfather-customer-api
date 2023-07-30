@@ -5,13 +5,14 @@ import com.hidden.godfather.customer.model.webHookTeams.Sections;
 import com.hidden.godfather.customer.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Mono;
+
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class TeamsWebHookService {
 
     private String url;
 
-    public void createWebHook(@NotNull String activityTitle,  String activitySubtitle, @NotNull String status) {
+    public Mono<Void> createWebHook(@NotNull String activityTitle, String activitySubtitle, @NotNull String status) {
         List<Sections> sectionsList = new ArrayList<>();
         Sections sections = new Sections();
         sections.activityTitle = activityTitle;
@@ -45,6 +46,7 @@ public class TeamsWebHookService {
         sections.markdown = true;
         sectionsList.add(sections);
         sendWebHook(sectionsList, sections.activityTitle);
+        return Mono.empty();
     }
 
     public void sendWebHook(List<Sections> sectionsList, String  summary) {

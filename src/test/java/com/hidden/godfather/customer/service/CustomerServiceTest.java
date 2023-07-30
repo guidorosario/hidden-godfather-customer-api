@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -34,6 +35,9 @@ public class CustomerServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
+
+    @Mock
+    private TeamsWebHookService teamsWebHookService;
 
 
     @Test
@@ -84,6 +88,8 @@ public class CustomerServiceTest {
         when(customerRepository.findByDocumentNumber(any())).thenReturn(Mono.empty());
 
         when(customerRepository.save(any())).thenReturn(Mono.just(customerMock()));
+
+        when(teamsWebHookService.createWebHook(any(),anyString(),anyString())).thenReturn(Mono.empty());
 
         StepVerifier.create(customerService.createCustomer(customerRequestMock()))
                 .expectSubscription()

@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.print.DocFlavor;
-
-import java.util.Objects;
-
 import static com.hidden.godfather.customer.mongo.mapper.CustomerMapper.customerUpdate;
 import static com.hidden.godfather.customer.mongo.mapper.CustomerMapper.customerUpdateActive;
 import static com.hidden.godfather.customer.mongo.mapper.CustomerMapper.toCustomer;
@@ -23,11 +19,17 @@ import static com.hidden.godfather.customer.util.DocumentUtils.validateDocument;
 public class CustomerService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomerService.class);
 
+    private static final String CREATE_USER = "Criação de Novo Usuário";
+
+    private static final String USER = "Usuário";
+
     private final CustomerRepository customerRepository;
+    private final TeamsWebHookService teamsWebHookService;
 
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, TeamsWebHookService teamsWebHookService) {
         this.customerRepository = customerRepository;
+        this.teamsWebHookService = teamsWebHookService;
     }
 
 
@@ -39,7 +41,11 @@ public class CustomerService {
                         .doOnSuccess($-> LOG.info(""))
                         .map(documentType -> toCustomer(customerRequest, documentType))
                         .flatMap(customerRepository::save))
-                .doOnSuccess($ -> LOG.info("Sucesso ao criar cliente"));
+                .doOnSuccess($ -> {
+                    teamsWebHookService.
+                            createWebHook(CREATE_USER, USER + customerRequest.name() + "criado", "Criado").subscribe();
+                    LOG.info("Sucesso ao criar cliente");
+                });
 
     }
     public Flux<Customer> getAllCustomer() {

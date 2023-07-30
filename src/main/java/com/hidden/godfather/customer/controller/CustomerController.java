@@ -23,11 +23,10 @@ import reactor.core.publisher.Mono;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final TeamsWebHookService teamsWebHookService;
 
-    public CustomerController(CustomerService customerService, TeamsWebHookService teamsWebHookService) {
+
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.teamsWebHookService = teamsWebHookService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,8 +39,7 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     Mono<Void> createCustomer(@RequestBody CustomerRequest customerRequest) {
-        teamsWebHookService.
-                createWebHook("Criação de Novo Usuário", "Usuário " + customerRequest.name() + "criado", "Criado");
+
         return customerService.createCustomer(customerRequest).then();
     }
 
